@@ -1,20 +1,16 @@
 package com.intive.androidplayground.match.model.api.repository
 
 import com.intive.androidplayground.match.model.MatchResult
-import io.reactivex.Single
+import io.reactivex.Maybe
 
 class LocalMatchResultRepository :
     MatchResultRepositoryAPI {
 
     private val matchResults = mutableListOf<MatchResult>()
 
-    override fun getMatchResults(): Single<List<MatchResult>> = if (matchResults.isNotEmpty()) {
-        Single.just(matchResults)
-    } else {
-        Single.error<List<MatchResult>> {
-            NoSuchElementException("no local item exists!")
-        }
-    }
+    override fun getMatchResults(): Maybe<List<MatchResult>> = Maybe.just(matchResults)
+        .map { it.toList() }
+        .filter { it.isNotEmpty() }
 
     override fun setMatchResults(matchResults: List<MatchResult>) {
         this.matchResults.clear()
