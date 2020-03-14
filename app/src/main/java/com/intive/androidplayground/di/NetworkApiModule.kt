@@ -7,6 +7,7 @@ val networkApiModule = module {
 
     single {
         OkHttpClient.Builder()
+            .cache(null)
             .build()
     }
 
